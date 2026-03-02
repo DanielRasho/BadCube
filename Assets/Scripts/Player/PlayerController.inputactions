@@ -14,6 +14,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Ice",
+                    "type": "Button",
+                    "id": "7b472e98-4876-43ef-bc89-330fe909c9b3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -146,6 +155,17 @@
                     "processors": "",
                     "groups": "Joystick",
                     "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "810f4ab6-aea5-4ba9-80fb-a29a8e864299",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ice",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

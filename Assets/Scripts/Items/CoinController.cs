@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class CoinController : MonoBehaviour
 {
-    private Collider2D collider;
+    private LevelManager _levelManager;
     
     [SerializeField] private AudioClip SoundFx;
 
-    private void Awake()
+    private void Start()
     {
-        collider = GetComponent<BoxCollider2D>();
+        _levelManager = GameObject.FindFirstObjectByType<LevelManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -17,7 +17,7 @@ public class CoinController : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             AudioManager.Instance.PlayFX(SoundFx);
-            GameObject.FindFirstObjectByType<LevelManager>().AddCoin();
+            _levelManager.AddCoin();
             Destroy(gameObject);
         }
     }

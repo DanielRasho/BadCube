@@ -4,9 +4,11 @@ using System.Collections.Generic;
 
 public class GridManager : MonoBehaviour
 {
-    [Header("Tilemaps")]
+    [Header("Tilemaps")] 
+    [SerializeField] private Tilemap ground;
     [SerializeField] private Tilemap collision;
-    [SerializeField] private Tilemap iceCubes;
+    [SerializeField] private Tilemap iceCubesTilemap;
+    [SerializeField] private TileBase iceTile;
 
     private HashSet<Vector2Int> staticWalls  = new();
     private HashSet<Vector2Int> iceBlocks    = new();
@@ -15,7 +17,7 @@ public class GridManager : MonoBehaviour
     void Awake()
     {
         LoadFromTilemap(collision, staticWalls);
-        LoadFromTilemap(iceCubes, iceBlocks);
+        LoadFromTilemap(iceCubesTilemap, iceBlocks);
     }
 
     private void LoadFromTilemap(Tilemap tilemap, HashSet<Vector2Int> target)
@@ -34,12 +36,14 @@ public class GridManager : MonoBehaviour
     // --- Ice (dynamic) ---
     public void AddIce(Vector2Int pos)
     {
+        iceCubesTilemap.SetTile((Vector3Int)pos, iceTile);
         iceBlocks.Add(pos);
     }
 
     public void RemoveIce(Vector2Int pos)
     {
         iceBlocks.Remove(pos);
+        iceCubesTilemap.SetTile((Vector3Int)pos, null);
     }
 
     public bool HasIce(Vector2Int pos) => iceBlocks.Contains(pos);
@@ -56,9 +60,16 @@ public class GridManager : MonoBehaviour
 
     // --- Queries ---
     public bool IsWalkable(Vector2Int pos) =>
+        ground.HasTile((Vector3Int)pos) &&
         !staticWalls.Contains(pos) &&
         !iceBlocks.Contains(pos) &&
         !enemyPositions.Contains(pos);
 
     public bool IsWall(Vector2Int pos) => staticWalls.Contains(pos);
+    
+    public Vector2Int GetCurrentCell(Transform t) =>
+        (Vector2Int)ground.WorldToCell(t.position);
+
+    public Vector3 CellToWorld(Vector2Int cell) =>
+        ground.CellToWorld((Vector3Int)cell) + (ground.cellSize * 0.5f);
 }
